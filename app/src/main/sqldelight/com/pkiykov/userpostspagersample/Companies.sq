@@ -1,0 +1,19 @@
+CREATE TABLE companies (
+  _id INTEGER NOT NULL PRIMARY KEY,
+  name TEXT,
+  catchPhrase TEXT,
+  bs TEXT
+);
+
+insert_company:
+INSERT OR REPLACE INTO companies (_id, name, catchPhrase, bs)
+VALUES (?, ?, ?, ?);
+
+select_company:
+SELECT *
+FROM companies
+WHERE _id = ?;
+
+select_all:
+SELECT *
+FROM companies;

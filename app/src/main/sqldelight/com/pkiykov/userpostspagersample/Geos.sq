@@ -1,0 +1,18 @@
+CREATE TABLE geos (
+  _id INTEGER NOT NULL PRIMARY KEY,
+  lat TEXT,
+  lng TEXT
+);
+
+insert_geo:
+INSERT OR REPLACE INTO geos (_id, lat, lng)
+VALUES (?, ?, ?);
+
+select_geo:
+SELECT *
+FROM geos
+WHERE _id = ?;
+
+select_all:
+SELECT *
+FROM geos;

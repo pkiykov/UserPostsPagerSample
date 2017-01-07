@@ -1,0 +1,20 @@
+CREATE TABLE addresses (
+  _id INTEGER NOT NULL PRIMARY KEY,
+  street TEXT,
+  suite TEXT,
+  city TEXT,
+  zipcode TEXT
+);
+
+insert_address:
+INSERT OR REPLACE INTO addresses (_id, street, suite, city, zipcode)
+VALUES (?, ?, ?, ?, ?);
+
+select_address:
+SELECT *
+FROM addresses
+WHERE _id = ?;
+
+select_all:
+SELECT *
+FROM addresses;

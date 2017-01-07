@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">UserPostsPagerSample</string>
+    <string name="endpoint">http://jsonplaceholder.typicode.com/</string>
+    <string name="title">User Posts</string>
+    <string name="main_image">Android image</string>
+    <string name="save_log">Save</string>
+    <string name="user_contact">Contact #</string>
+    <string name="connection_problem">Соединение с сервером отсутствует</string>
+    <string name="save_user">save user</string>
+    <string name="permission_write_logs">Дайте свое согласие! Нам очень нужно записать вирус в Ваш смартфон!</string>
+    <string name="location">Location</string>
+    <string name="website">website</string>
+    <string name="email">email</string>
+    <string name="phone">phone</string>
+</resources>
