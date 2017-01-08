@@ -59,7 +59,7 @@ public class Company implements CompaniesModel{
 
 
 
-    public static final Factory FACTORY = new Factory<>(Company::new);
+   // public static final Factory FACTORY = new Factory<>(Company::new);
 
     public Company(long _id, String name, String catchPhrase, String bs) {
         this._id = _id;

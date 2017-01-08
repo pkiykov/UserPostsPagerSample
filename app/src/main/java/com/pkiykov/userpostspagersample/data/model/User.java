@@ -131,9 +131,7 @@ public class User implements UsersModel {
         this.company = company;
     }
 
-    public static final Factory FACTORY = new Factory<>(User::new);
-
-
+   // public static final Factory FACTORY = new Factory<>(User::new);
 
     @Override
     public long _id() {

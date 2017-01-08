@@ -116,7 +116,7 @@ public class Address implements AddressesModel {
         return zipcode;
     }
 
-    public static final Factory FACTORY = new  Factory<>(Address::new);
+   // public static final Factory FACTORY = new  Factory<>(Address::new);
 
     public Address(long _id, String street, String suite, String city, String zipcode) {
         this._id = _id;

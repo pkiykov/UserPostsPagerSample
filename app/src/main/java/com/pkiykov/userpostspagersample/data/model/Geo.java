@@ -70,5 +70,5 @@ public class Geo implements GeosModel{
 
 
 
-    public static final Factory FACTORY = new Factory<>(Geo::new);
+   // public static final Factory FACTORY = new Factory<>(Geo::new);
 }
