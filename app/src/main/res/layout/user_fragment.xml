@@ -45,7 +45,7 @@
             android:textAppearance="?android:textAppearanceLarge" />
     </RelativeLayout>
 
-    <include layout="@layout/contatct_scrolling"
+    <include layout="@layout/contact_scrolling"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/save_user_btn"

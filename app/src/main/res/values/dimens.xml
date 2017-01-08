@@ -3,4 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="viewpager_element_margin">4dp</dimen>
+    <dimen name="contact_icon_size">18dp</dimen>
+    <dimen name="contact_text_from_icon_margin">4dp</dimen>
 </resources>
