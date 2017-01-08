@@ -1,8 +1,5 @@
 package com.pkiykov.userpostspagersample.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -14,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "title",
         "body"
 })
-public class Post implements Parcelable {
+public class Post {
 
     @JsonProperty("userId")
     private long userId;
@@ -24,26 +21,6 @@ public class Post implements Parcelable {
     private String title;
     @JsonProperty("body")
     private String body;
-    public final static Parcelable.Creator<Post> CREATOR = new Creator<Post>() {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public Post createFromParcel(Parcel in) {
-            Post instance = new Post();
-            instance.userId = ((long) in.readValue((long.class.getClassLoader())));
-            instance.id = ((long) in.readValue((long.class.getClassLoader())));
-            instance.title = ((String) in.readValue((String.class.getClassLoader())));
-            instance.body = ((String) in.readValue((String.class.getClassLoader())));
-            return instance;
-        }
-
-        public Post[] newArray(int size) {
-            return (new Post[size]);
-        }
-
-    };
 
     @JsonProperty("userId")
     public long getUserId() {
@@ -83,17 +60,6 @@ public class Post implements Parcelable {
     @JsonProperty("body")
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(userId);
-        dest.writeValue(id);
-        dest.writeValue(title);
-        dest.writeValue(body);
-    }
-
-    public int describeContents() {
-        return 0;
     }
 
 }

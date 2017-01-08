@@ -13,12 +13,11 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import nucleus.presenter.RxPresenter;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class PostsFragmentPresenter extends RxPresenter<PostsFragment> {
+public class PostsFragmentPresenter extends BasePresenter<PostsFragment> {
 
 
     private static final int REQUEST_POSTS = 1;
@@ -32,14 +31,17 @@ public class PostsFragmentPresenter extends RxPresenter<PostsFragment> {
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
-        restartableLatestCache(REQUEST_POSTS,
+        restartableReplay(REQUEST_POSTS,
                 () -> userPostsService.getPosts()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()),
-                PostsFragment::showPosts,
+                (postsFragment1, posts) -> {
+                    postsFragment1.showPosts(posts);
+                },
                 (postsFragment, throwable) -> {
                     ((MainActivity) postsFragment.getActivity()).onNetworkError();
-                        waitForInternetToComeBack();
+                    postsFragment.stopAnimation();
+                    waitForInternetToComeBack();
                 });
     }
 
@@ -67,6 +69,7 @@ public class PostsFragmentPresenter extends RxPresenter<PostsFragment> {
         super.onDestroy();
         stopWaitForInternetToComeBack();
     }
+
     public void request() {
         start(REQUEST_POSTS);
     }

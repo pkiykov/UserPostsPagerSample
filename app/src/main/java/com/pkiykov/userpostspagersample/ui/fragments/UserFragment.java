@@ -84,7 +84,6 @@ public class UserFragment extends BaseFragment<UserFragmentPresenter> {
         }
     }
 
-
     private void enableButtons(){
         buttonsList.get(0).setEnabled(true);
         buttonsList.get(1).setEnabled(true);

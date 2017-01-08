@@ -12,6 +12,7 @@ import com.pkiykov.userpostspagersample.ui.fragments.PostsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import icepick.State;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setToolBarTitle(getString(R.string.title));
 
-        if (getFragmentManager().getBackStackEntryCount() == 0)
+        if (savedInstanceState == null)
             startFragment(PostsFragment.getInstance());
     }
 

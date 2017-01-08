@@ -11,12 +11,11 @@ import com.pkiykov.userpostspagersample.utils.InternetConnection;
 
 import javax.inject.Inject;
 
-import nucleus.presenter.RxPresenter;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class UserFragmentPresenter extends RxPresenter<UserFragment> {
+public class UserFragmentPresenter extends BasePresenter<UserFragment> {
 
     private static final int GET_USER_REQUEST = 1;
     private long userId;
@@ -38,7 +37,7 @@ public class UserFragmentPresenter extends RxPresenter<UserFragment> {
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
 
-        restartableLatestCache(GET_USER_REQUEST,
+        restartableReplay(GET_USER_REQUEST,
                 () -> userPostsService.getUser(userId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()),
@@ -50,6 +49,7 @@ public class UserFragmentPresenter extends RxPresenter<UserFragment> {
                 (userFragment, throwable) -> {
                     ((MainActivity)(userFragment.getActivity())).onNetworkError();
                         waitForInternetToComeBack();
+                        userFragment.showLoading(false);
                 });
     }
 

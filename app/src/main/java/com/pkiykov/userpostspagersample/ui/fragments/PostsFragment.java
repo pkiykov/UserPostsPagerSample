@@ -75,6 +75,7 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
         super.onViewCreated(view, savedInstanceState);
         viewPager.setAdapter(postsPagerAdapter);
         indicator.setupWithViewPager(viewPager, true);
+        ((MainActivity) (getActivity())).setToolBarTitle(getString(R.string.title));
         if (savedInstanceState == null) {
             showAnimation();
             getPresenter().request();
@@ -113,13 +114,16 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
     }
 
     public void showPosts(List<Post> posts) {
+
         imageView.clearAnimation();
         saveBtn.setVisibility(View.VISIBLE);
-        viewPager.setVisibility(View.VISIBLE);
         postsPagerAdapter.updateList(posts);
         if (state != null) {
             viewPager.onRestoreInstanceState(state);
         }
     }
 
+    public void stopAnimation() {
+        imageView.clearAnimation();
+    }
 }
