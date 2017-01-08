@@ -11,6 +11,7 @@ import com.pkiykov.userpostspagersample.R;
 import com.pkiykov.userpostspagersample.data.model.Post;
 import com.pkiykov.userpostspagersample.ui.fragments.PostsFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindViews;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
 public class PostsPagerAdapter extends PagerAdapter {
 
     private PostsFragment postsFragment;
-    private List<Post> postArrayList;
+    private List<Post> postArrayList = new ArrayList<>();
 
     @BindViews({R.id.post_1_id, R.id.post_2_id, R.id.post_3_id, R.id.post_4_id, R.id.post_5_id, R.id.post_6_id})
     List<TextView> postsIdList;
@@ -28,10 +29,9 @@ public class PostsPagerAdapter extends PagerAdapter {
     @BindViews({R.id.element_1, R.id.element_2, R.id.element_3, R.id.element_4, R.id.element_5, R.id.element_6})
     List<CardView> cardViewsList;
 
-    public PostsPagerAdapter(PostsFragment postsFragment, List<Post> postArrayList) {
+    public PostsPagerAdapter(PostsFragment postsFragment) {
         super();
         this.postsFragment = postsFragment;
-        this.postArrayList = postArrayList;
     }
 
     @Override
@@ -73,5 +73,16 @@ public class PostsPagerAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+    public void updateList(List<Post> postArrayList) {
+        this.postArrayList.clear();
+        this.postArrayList.addAll(postArrayList);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

@@ -1,13 +1,12 @@
 package com.pkiykov.userpostspagersample;
 
-import com.pkiykov.userpostspagersample.data.PostsComponent;
 import com.pkiykov.userpostspagersample.data.api.ApiModule;
-import com.pkiykov.userpostspagersample.data.api.PostsModule;
 import com.pkiykov.userpostspagersample.data.api.UtilsModule;
 import com.pkiykov.userpostspagersample.data.database.DbModule;
+import com.pkiykov.userpostspagersample.ui.components.PostsFragmentComponent;
 import com.pkiykov.userpostspagersample.ui.components.UserFragmentComponent;
+import com.pkiykov.userpostspagersample.ui.modules.PostsFragmentModule;
 import com.pkiykov.userpostspagersample.ui.modules.UserFragmentModule;
-import com.pkiykov.userpostspagersample.ui.presenters.MainActivityPresenter;
 import com.pkiykov.userpostspagersample.ui.presenters.PostsFragmentPresenter;
 import com.pkiykov.userpostspagersample.ui.presenters.UserFragmentPresenter;
 
@@ -27,9 +26,7 @@ import dagger.Component;
 )
 public interface AppComponent {
 
-    void inject(MainActivityPresenter mainActivityPresenter);
-
-    PostsComponent plus(PostsModule postsModule);
+    PostsFragmentComponent plus(PostsFragmentModule postsFragmentModule);
 
     UserFragmentComponent plus(UserFragmentModule userFragmentModule);
 

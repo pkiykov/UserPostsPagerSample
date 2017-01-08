@@ -21,10 +21,5 @@
         android:id="@+id/fragment_container">
     </FrameLayout>
 
-    <ProgressBar
-        android:id="@+id/pbLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+
 </RelativeLayout>

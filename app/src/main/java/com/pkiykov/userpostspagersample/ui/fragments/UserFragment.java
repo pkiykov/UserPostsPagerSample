@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,6 +29,8 @@ import nucleus.factory.RequiresPresenter;
 @RequiresPresenter(UserFragmentPresenter.class)
 public class UserFragment extends BaseFragment<UserFragmentPresenter> {
 
+    @BindView(R.id.pbLoading)
+    ProgressBar pbLoading;
     @BindView(R.id.save_user_btn)
     Button saveUserBtn;
     @BindViews({R.id.post_number, R.id.user_name, R.id.nickname, R.id.tvCall, R.id.tvMail, R.id.tvWeb, R.id.tvLocation})
@@ -70,25 +73,31 @@ public class UserFragment extends BaseFragment<UserFragmentPresenter> {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         long userId = getArguments().getLong(SELECTED_USER_ID);
-        getPresenter().request(userId);
         String title = getString(R.string.user_contact) + userId;
         ((MainActivity) (getActivity())).setToolBarTitle(title);
-        ((MainActivity) (getActivity())).showLoading(true);
+        if (savedInstanceState == null) {
+            showLoading(true);
+            getPresenter().request(userId);
+        }
     }
 
-    public void showUser(User user) {
-        tvList.get(0).setText(String.valueOf(user.getId()));
-        tvList.get(1).setText(user.getName());
-        tvList.get(2).setText(user.getUsername());
 
+    private void enableButtons(){
         buttonsList.get(0).setEnabled(true);
         buttonsList.get(1).setEnabled(true);
         buttonsList.get(2).setEnabled(true);
         buttonsList.get(3).setEnabled(true);
+        saveUserBtn.setEnabled(true);
+    }
 
+    public void showUser(User user) {
+        enableButtons();
+        tvList.get(0).setText(String.valueOf(user.getId()));
+        tvList.get(1).setText(user.getName());
+        tvList.get(2).setText(user.getUsername());
         tvList.get(4).setText(user.getEmail());
         buttonsList.get(0).setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("mailto:" + user.getEmail()))));
         tvList.get(5).setText(user.getWebsite());
@@ -107,7 +116,10 @@ public class UserFragment extends BaseFragment<UserFragmentPresenter> {
                     + user.getAddress().getSuite() + ")";
             getActivity().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
         });
-        saveUserBtn.setEnabled(true);
+    }
+
+    public void showLoading(boolean loading) {
+        pbLoading.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
 }

@@ -1,29 +1,27 @@
 package com.pkiykov.userpostspagersample.ui.fragments;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.github.florent37.viewanimator.ViewAnimator;
 import com.pkiykov.userpostspagersample.R;
 import com.pkiykov.userpostspagersample.UserPostsApplication;
+import com.pkiykov.userpostspagersample.data.model.Post;
 import com.pkiykov.userpostspagersample.ui.MainActivity;
 import com.pkiykov.userpostspagersample.ui.adapters.PostsPagerAdapter;
 import com.pkiykov.userpostspagersample.ui.modules.PostsFragmentModule;
 import com.pkiykov.userpostspagersample.ui.presenters.PostsFragmentPresenter;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -45,7 +43,6 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
     @BindView(R.id.save_logs_btn)
     FloatingActionButton saveBtn;
 
-
     @Inject
     PostsPagerAdapter postsPagerAdapter;
 
@@ -61,7 +58,7 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
 
     protected void setUpComponent() {
         UserPostsApplication.get(getActivity())
-                .getPostsComponent()
+                .getAppComponent()
                 .plus(new PostsFragmentModule(this))
                 .inject(this);
     }
@@ -72,39 +69,21 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
         return inflater.inflate(R.layout.posts_fragment, container, false);
     }
 
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager.setAdapter(postsPagerAdapter);
         indicator.setupWithViewPager(viewPager, true);
-        if (state != null) {
-            viewPager.onRestoreInstanceState(state);
-            saveBtn.setVisibility(View.VISIBLE);
-        } else {
-            ViewAnimator
-                    .animate(imageView, viewPager)
-                    .scale(0, 1)
-                    .start()
-                    .onStop(() -> {
-                        if (saveBtn != null)
-                            saveBtn.setVisibility(View.VISIBLE);
-                    });
+        if (savedInstanceState == null) {
+            showAnimation();
+            getPresenter().request();
         }
     }
 
-    @OnClick (R.id.save_logs_btn)
-    public void saveLogs(){
+    @OnClick(R.id.save_logs_btn)
+    public void saveLogs() {
         getPresenter().saveLogs();
-        try {
-            final File path = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)));
-            Runtime.getRuntime().exec(
-                    "logcat  -d -f " + path + File.separator
-                            + "dbo_logcat"
-                            + ".txt");
-            Log.d("MyTag", "path :"+path.getAbsolutePath());
-        } catch (IOException e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -122,6 +101,25 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
 
     public void onItemClick(long userId) {
         ((MainActivity) getActivity()).startFragment(UserFragment.getInstance(userId));
+    }
+
+    public void showAnimation() {
+
+        Animation pulsation = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
+        pulsation.setRepeatCount(Animation.INFINITE);
+        pulsation.setRepeatMode(Animation.RESTART);
+        imageView.startAnimation(pulsation);
+
+    }
+
+    public void showPosts(List<Post> posts) {
+        imageView.clearAnimation();
+        saveBtn.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.VISIBLE);
+        postsPagerAdapter.updateList(posts);
+        if (state != null) {
+            viewPager.onRestoreInstanceState(state);
+        }
     }
 
 }

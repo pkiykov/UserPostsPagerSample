@@ -11,12 +11,12 @@ import com.pkiykov.userpostspagersample.utils.InternetConnection;
 
 import javax.inject.Inject;
 
-import icepick.State;
+import nucleus.presenter.RxPresenter;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class UserFragmentPresenter extends BasePresenter<UserFragment> {
+public class UserFragmentPresenter extends RxPresenter<UserFragment> {
 
     private static final int GET_USER_REQUEST = 1;
     private long userId;
@@ -28,9 +28,6 @@ public class UserFragmentPresenter extends BasePresenter<UserFragment> {
     DatabaseHelper databaseHelper;
 
     private Subscription internetStatusSubscription;
-
-    @State
-    boolean isPostsLoadedAtLeastOnce;
 
     @Inject
     UserPostsService userPostsService;
@@ -46,16 +43,13 @@ public class UserFragmentPresenter extends BasePresenter<UserFragment> {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()),
                 (userFragment, user) -> {
-                    isPostsLoadedAtLeastOnce = true;
                     UserFragmentPresenter.this.user = user;
-                    ((MainActivity)(userFragment.getActivity())).showLoading(false);
+                    userFragment.showLoading(false);
                     userFragment.showUser(user);
                 },
                 (userFragment, throwable) -> {
                     ((MainActivity)(userFragment.getActivity())).onNetworkError();
-                    if (!isPostsLoadedAtLeastOnce) {
                         waitForInternetToComeBack();
-                    }
                 });
     }
 

@@ -18,11 +18,9 @@ import com.pkiykov.userpostspagersample.data.model.User;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final int VERSION = 1;
-    private Context context;
 
     public DatabaseHelper(Context context) {
         super(context, "user_posts", null, VERSION);
-        this.context = context;
     }
 
     @Override
