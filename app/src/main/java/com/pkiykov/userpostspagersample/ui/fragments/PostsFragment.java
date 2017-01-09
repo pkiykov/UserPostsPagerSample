@@ -28,7 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.Icepick;
 import icepick.State;
 import nucleus.factory.RequiresPresenter;
 
@@ -54,7 +53,6 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
     public void onCreate(Bundle savedInstanceState) {
         setUpComponent();
         super.onCreate(savedInstanceState);
-        Icepick.restoreInstanceState(this, savedInstanceState);
     }
 
     protected void setUpComponent() {
@@ -89,13 +87,11 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
         getPresenter().saveLogs();
     }
 
+
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        if(viewPager != null) {
-            super.onSaveInstanceState(bundle);
-            state = viewPager.onSaveInstanceState();
-            Icepick.saveInstanceState(this, bundle);
-        }
+    public void onPause() {
+        super.onPause();
+        state = viewPager.onSaveInstanceState();
     }
 
     public static PostsFragment getInstance() {
@@ -103,7 +99,7 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
     }
 
     public void onItemClick(long userId) {
-        ((MainActivity) getActivity()).startFragment(UserFragment.getInstance(userId));
+        ((MainActivity) getActivity()).push(UserFragment.getInstance(userId));
     }
 
     public void showAnimation() {
@@ -116,13 +112,10 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
     }
 
     public void showPosts(List<Post> posts) {
-
         imageView.clearAnimation();
         saveBtn.setVisibility(View.VISIBLE);
         postsPagerAdapter.updateList(posts);
-        if (state != null) {
-            viewPager.onRestoreInstanceState(state);
-        }
+        viewPager.onRestoreInstanceState(state);
     }
 
     public void showEmptyDatabaseError() {
@@ -140,4 +133,5 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
         super.onStart();
         getPresenter().waitForInternetToComeBack();
     }
+
 }

@@ -8,6 +8,7 @@ import com.pkiykov.userpostspagersample.utils.Injector;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import icepick.Icepick;
 import nucleus.factory.PresenterFactory;
 import nucleus.presenter.Presenter;
 import nucleus.view.NucleusFragment;
@@ -25,6 +26,7 @@ public class BaseFragment<P extends Presenter> extends NucleusFragment<P> {
             return presenter;
         });
         super.onCreate(bundle);
+        Icepick.restoreInstanceState(this, bundle);
     }
 
     @Override
@@ -38,4 +40,12 @@ public class BaseFragment<P extends Presenter> extends NucleusFragment<P> {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        Icepick.saveInstanceState(this, bundle);
+    }
+
+
 }

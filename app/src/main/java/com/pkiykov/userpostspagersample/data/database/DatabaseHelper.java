@@ -57,15 +57,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         insertCompany.bind(user.getId(), company.getName(), company.getCatchPhrase(), company.getBs());
         insertGeo.bind(user._id(), geo.getLat(), geo.getLng());
 
-        long u = insertUser.program.executeInsert();
-        long a = insertAddress.program.executeInsert();
-        long c = insertCompany.program.executeInsert();
-        long g = insertGeo.program.executeInsert();
-
-        Log.d("MyTag", "user = " + u);
-        Log.d("MyTag", "address = " + a);
-        Log.d("MyTag", "company = " + c);
-        Log.d("MyTag", "geo = " + g);
+        insertUser.program.executeInsert();
+        insertAddress.program.executeInsert();
+        insertCompany.program.executeInsert();
+        insertGeo.program.executeInsert();
     }
 
 
@@ -74,8 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         for (Post post : posts) {
             insertPost.bind(post.userId(), post.id(), post.getTitle(), post.getBody());
-            long p = insertPost.program.executeInsert();
-            Log.d("MyTag", "post = " + p);
+            insertPost.program.executeInsert();
         }
     }
 }
