@@ -14,7 +14,7 @@ public class UtilsModule {
 
     @Provides
     @Singleton
-    InternetConnection provideInternetConnection(Application application){
+    InternetConnection provideInternetConnection(Application application) {
         return new InternetConnection(application);
     }
 

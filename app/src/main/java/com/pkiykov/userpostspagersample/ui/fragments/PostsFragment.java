@@ -82,6 +82,7 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
         }
     }
 
+
     @OnClick(R.id.save_logs_btn)
     public void saveLogs() {
         getPresenter().saveLogs();

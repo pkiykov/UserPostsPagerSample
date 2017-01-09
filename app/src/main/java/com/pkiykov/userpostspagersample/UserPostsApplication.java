@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.pkiykov.userpostspagersample.data.api.ApiModule;
-import com.pkiykov.userpostspagersample.data.api.UtilsModule;
 import com.pkiykov.userpostspagersample.data.database.DbModule;
 import com.pkiykov.userpostspagersample.utils.ComponentReflectionInjector;
 import com.pkiykov.userpostspagersample.utils.Injector;
@@ -28,7 +27,6 @@ public class UserPostsApplication extends Application implements Injector {
                 .appModule(new AppModule(this))
                 .apiModule(new ApiModule())
                 .dbModule(new DbModule())
-                .utilsModule(new UtilsModule())
                 .build();
         injector = new ComponentReflectionInjector<>(AppComponent.class, appComponent);
     }

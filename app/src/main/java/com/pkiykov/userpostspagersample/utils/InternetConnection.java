@@ -44,7 +44,11 @@ public class InternetConnection {
     }
 
     public void unRegisterBroadCastReceiver() {
-        context.unregisterReceiver(broadcastReceiver);
+        try {
+            context.unregisterReceiver(broadcastReceiver);
+        }catch (IllegalArgumentException ignored){
+
+        }
     }
 }
 

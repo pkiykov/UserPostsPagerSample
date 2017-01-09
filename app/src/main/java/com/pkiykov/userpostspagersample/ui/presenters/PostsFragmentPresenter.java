@@ -27,6 +27,7 @@ public class PostsFragmentPresenter extends RxPresenter<PostsFragment> {
 
 
     private static final int REQUEST_POSTS = 1;
+
     private Subscription internetStatusSubscription;
 
     @Inject
@@ -119,4 +120,5 @@ public class PostsFragmentPresenter extends RxPresenter<PostsFragment> {
             }
         }).start();
     }
+
 }
