@@ -15,6 +15,7 @@ Test app at the interview for 'junior' android developer
 *   [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 *   [Dagger](https://github.com/google/dagger)
 *   [Retrofit](https://github.com/square/retrofit)
+*   [SQLBrite](https://github.com/square/sqlbrite)
 *   [SQLDelight](https://github.com/square/sqldelight)
 *   [ButterKnife](https://github.com/JakeWharton/butterknife)
 *   [IcePick](https://github.com/frankiesardo/icepick)
