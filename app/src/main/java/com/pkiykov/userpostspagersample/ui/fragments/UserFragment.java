@@ -29,6 +29,8 @@ import nucleus.factory.RequiresPresenter;
 @RequiresPresenter(UserFragmentPresenter.class)
 public class UserFragment extends BaseFragment<UserFragmentPresenter> {
 
+    public static final String SELECTED_USER_ID = "selected_user_id";
+
     @BindView(R.id.pbLoading)
     ProgressBar pbLoading;
     @BindView(R.id.save_user_btn)
@@ -37,8 +39,6 @@ public class UserFragment extends BaseFragment<UserFragmentPresenter> {
     List<TextView> tvList;
     @BindViews({R.id.mail, R.id.web, R.id.phone, R.id.city})
     List<RelativeLayout> buttonsList;
-
-    public static final String SELECTED_USER_ID = "selected_user_id";
 
     public static UserFragment getInstance(long uesrId) {
         UserFragment userFragment = new UserFragment();
@@ -120,5 +120,17 @@ public class UserFragment extends BaseFragment<UserFragmentPresenter> {
         buttonsList.get(2).setEnabled(b);
         buttonsList.get(3).setEnabled(b);
         saveUserBtn.setEnabled(b);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getPresenter().stopWaitForInternetToComeBack();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().waitForInternetToComeBack();
     }
 }

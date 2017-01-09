@@ -2,6 +2,7 @@ package com.pkiykov.userpostspagersample.ui.presenters;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 
 import com.pkiykov.userpostspagersample.data.api.UserPostsService;
 import com.pkiykov.userpostspagersample.data.database.DatabaseHelper;
@@ -72,36 +73,27 @@ public class PostsFragmentPresenter extends RxPresenter<PostsFragment> {
                     observable.subscribe(posts -> {
                         if (posts.size() > 0) {
                             postsFragment.showPosts(posts);
+                        }else {
+                            postsFragment.showEmptyDatabaseError();
                         }
-                        PostsFragmentPresenter.this.waitForInternetToComeBack();
                     });
                 });
     }
 
 
-    private void waitForInternetToComeBack() {
-        if (internetStatusSubscription == null || internetStatusSubscription.isUnsubscribed()) {
+    public void waitForInternetToComeBack() {
             internetStatusSubscription = internetConnection.getInternetStatusHotObservable()
                     .filter(internetConnectionStatus -> internetConnectionStatus)
                     .subscribe(internetConnectionStatus -> {
                         request();
-                        stopWaitForInternetToComeBack();
                     });
-        }
+
         internetConnection.registerBroadCastReceiver();
     }
 
-    private void stopWaitForInternetToComeBack() {
-        if (internetStatusSubscription != null && !internetStatusSubscription.isUnsubscribed()) {
+    public void stopWaitForInternetToComeBack() {
             internetStatusSubscription.unsubscribe();
             internetConnection.unRegisterBroadCastReceiver();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopWaitForInternetToComeBack();
     }
 
     public void request() {

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.pkiykov.userpostspagersample.R;
 import com.pkiykov.userpostspagersample.UserPostsApplication;
@@ -122,5 +123,21 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
         if (state != null) {
             viewPager.onRestoreInstanceState(state);
         }
+    }
+
+    public void showEmptyDatabaseError() {
+        Toast.makeText(getActivity(), R.string.cannot_load_data, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getPresenter().stopWaitForInternetToComeBack();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().waitForInternetToComeBack();
     }
 }

@@ -12,4 +12,5 @@
     <string name="website">website</string>
     <string name="email">email</string>
     <string name="phone">phone</string>
+    <string name="cannot_load_data">Fail to load data :(</string>
 </resources>

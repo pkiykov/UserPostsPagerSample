@@ -52,36 +52,25 @@ public class UserFragmentPresenter extends RxPresenter<UserFragment> {
                 },
                 (userFragment, throwable) -> {
                     ((MainActivity)(userFragment.getActivity())).onNetworkError();
-                        waitForInternetToComeBack();
                         userFragment.activateButtons(false);
                         userFragment.showLoading(false);
                 });
     }
 
-    private void waitForInternetToComeBack() {
-        if (internetStatusSubscription == null || internetStatusSubscription.isUnsubscribed()) {
+    public void waitForInternetToComeBack() {
             internetStatusSubscription = internetConnection.getInternetStatusHotObservable()
                     .filter(internetConnectionStatus -> internetConnectionStatus)
                     .subscribe(internetConnectionStatus -> {
                         request(userId);
-                        stopWaitForInternetToComeBack();
                     });
-        }
         internetConnection.registerBroadCastReceiver();
     }
 
-    private void stopWaitForInternetToComeBack() {
-        if (internetStatusSubscription != null && !internetStatusSubscription.isUnsubscribed()) {
+    public void stopWaitForInternetToComeBack() {
             internetStatusSubscription.unsubscribe();
             internetConnection.unRegisterBroadCastReceiver();
-        }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopWaitForInternetToComeBack();
-    }
     public void request(long userId) {
         this.userId = userId;
         start(GET_USER_REQUEST);
