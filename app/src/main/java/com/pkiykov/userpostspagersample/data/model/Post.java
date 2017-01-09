@@ -1,8 +1,11 @@
 package com.pkiykov.userpostspagersample.data.model;
 
+import android.support.annotation.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.pkiykov.userpostspagersample.PostsModel;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -11,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "title",
         "body"
 })
-public class Post {
+public class Post implements PostsModel{
+
+    public static final String POST_TABLE_NAME = "posts";
 
     @JsonProperty("userId")
     private long userId;
@@ -62,4 +67,34 @@ public class Post {
         this.body = body;
     }
 
+    @Override
+    public long userId() {
+        return userId;
+    }
+
+    @Override
+    public long id() {
+        return id;
+    }
+
+    @Nullable
+    @Override
+    public String title() {
+        return title;
+    }
+
+    @Nullable
+    @Override
+    public String body() {
+        return body;
+    }
+
+   /* public Post(long userId, long id, String title, String body) {
+        this.userId = userId;
+        this.id = id;
+        this.title = title;
+        this.body = body;
+    }
+
+     public static final Factory FACTORY = new Factory<>(Post::new);*/
 }

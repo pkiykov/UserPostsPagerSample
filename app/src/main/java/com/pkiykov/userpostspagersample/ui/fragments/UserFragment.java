@@ -84,16 +84,9 @@ public class UserFragment extends BaseFragment<UserFragmentPresenter> {
         }
     }
 
-    private void enableButtons(){
-        buttonsList.get(0).setEnabled(true);
-        buttonsList.get(1).setEnabled(true);
-        buttonsList.get(2).setEnabled(true);
-        buttonsList.get(3).setEnabled(true);
-        saveUserBtn.setEnabled(true);
-    }
 
     public void showUser(User user) {
-        enableButtons();
+        activateButtons(true);
         tvList.get(0).setText(String.valueOf(user.getId()));
         tvList.get(1).setText(user.getName());
         tvList.get(2).setText(user.getUsername());
@@ -121,4 +114,11 @@ public class UserFragment extends BaseFragment<UserFragmentPresenter> {
         pbLoading.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
+    public void activateButtons(boolean b) {
+        buttonsList.get(0).setEnabled(b);
+        buttonsList.get(1).setEnabled(b);
+        buttonsList.get(2).setEnabled(b);
+        buttonsList.get(3).setEnabled(b);
+        saveUserBtn.setEnabled(b);
+    }
 }

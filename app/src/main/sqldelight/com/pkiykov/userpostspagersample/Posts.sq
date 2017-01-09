@@ -1,0 +1,19 @@
+CREATE TABLE posts (
+  userId INTEGER NOT NULL,
+  id INTEGER NOT NULL PRIMARY KEY,
+  title TEXT,
+  body TEXT
+);
+
+insert_post:
+INSERT OR REPLACE INTO posts (userId, id, title, body)
+VALUES (?, ?, ?, ?);
+
+select_posts_by_userId:
+SELECT *
+FROM posts
+WHERE userId = ?;
+
+select_all:
+SELECT *
+FROM posts;

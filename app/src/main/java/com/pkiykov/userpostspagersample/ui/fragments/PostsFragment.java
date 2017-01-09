@@ -76,7 +76,7 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
         viewPager.setAdapter(postsPagerAdapter);
         indicator.setupWithViewPager(viewPager, true);
         ((MainActivity) (getActivity())).setToolBarTitle(getString(R.string.title));
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null || postsPagerAdapter.getListSize() == 0) {
             showAnimation();
             getPresenter().request();
         }
@@ -89,7 +89,7 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
-        if (viewPager != null) {
+        if(viewPager != null) {
             super.onSaveInstanceState(bundle);
             state = viewPager.onSaveInstanceState();
             Icepick.saveInstanceState(this, bundle);
@@ -121,9 +121,5 @@ public class PostsFragment extends BaseFragment<PostsFragmentPresenter> {
         if (state != null) {
             viewPager.onRestoreInstanceState(state);
         }
-    }
-
-    public void stopAnimation() {
-        imageView.clearAnimation();
     }
 }

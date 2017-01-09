@@ -9,11 +9,15 @@ import android.util.Log;
 import com.pkiykov.userpostspagersample.AddressesModel;
 import com.pkiykov.userpostspagersample.CompaniesModel;
 import com.pkiykov.userpostspagersample.GeosModel;
+import com.pkiykov.userpostspagersample.PostsModel;
 import com.pkiykov.userpostspagersample.UsersModel;
 import com.pkiykov.userpostspagersample.data.model.Address;
 import com.pkiykov.userpostspagersample.data.model.Company;
 import com.pkiykov.userpostspagersample.data.model.Geo;
+import com.pkiykov.userpostspagersample.data.model.Post;
 import com.pkiykov.userpostspagersample.data.model.User;
+
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -29,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(Address.CREATE_TABLE);
         db.execSQL(Company.CREATE_TABLE);
         db.execSQL(Geo.CREATE_TABLE);
+        db.execSQL(Post.CREATE_TABLE);
     }
 
     @Override
@@ -36,30 +41,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertDataIntoDb(User user) {
+    public void insertUserDataIntoDb(User user) {
 
         Address address = user.getAddress();
         Geo geo = address.getGeo();
         Company company = user.getCompany();
 
-        User.Insert_user insertUser = new UsersModel.Insert_user(getReadableDatabase());
-        Address.Insert_address insertAddress = new AddressesModel.Insert_address(getReadableDatabase());
-        Company.Insert_company insertCompany = new CompaniesModel.Insert_company(getReadableDatabase());
-        Geo.Insert_geo insertGeo = new GeosModel.Insert_geo(getReadableDatabase());
+        User.Insert_user insertUser = new UsersModel.Insert_user(getWritableDatabase());
+        Address.Insert_address insertAddress = new AddressesModel.Insert_address(getWritableDatabase());
+        Company.Insert_company insertCompany = new CompaniesModel.Insert_company(getWritableDatabase());
+        Geo.Insert_geo insertGeo = new GeosModel.Insert_geo(getWritableDatabase());
 
         insertUser.bind(user.getId(), user.getName(), user.getUsername(), user.getEmail(), user.getPhone(), user.getWebsite());
         insertAddress.bind(user.getId(), address.getStreet(), address.getSuite(), address.getCity(), address.getZipcode());
         insertCompany.bind(user.getId(), company.getName(), company.getCatchPhrase(), company.getBs());
         insertGeo.bind(user._id(), geo.getLat(), geo.getLng());
 
-        long u = insertUser.program.executeUpdateDelete();
-        long a = insertAddress.program.executeUpdateDelete();
-        long c = insertCompany.program.executeUpdateDelete();
-        long g = insertGeo.program.executeUpdateDelete();
+        long u = insertUser.program.executeInsert();
+        long a = insertAddress.program.executeInsert();
+        long c = insertCompany.program.executeInsert();
+        long g = insertGeo.program.executeInsert();
 
         Log.d("MyTag", "user = " + u);
         Log.d("MyTag", "address = " + a);
         Log.d("MyTag", "company = " + c);
         Log.d("MyTag", "geo = " + g);
+    }
+
+
+    public void savePostsToDB(List<Post> posts) {
+        Post.Insert_post insertPost = new PostsModel.Insert_post(getWritableDatabase());
+
+        for (Post post : posts) {
+            insertPost.bind(post.userId(), post.id(), post.getTitle(), post.getBody());
+            long p = insertPost.program.executeInsert();
+            Log.d("MyTag", "post = " + p);
+        }
     }
 }

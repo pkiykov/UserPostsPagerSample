@@ -11,18 +11,22 @@ import com.pkiykov.userpostspagersample.utils.InternetConnection;
 
 import javax.inject.Inject;
 
+import icepick.Icepick;
+import icepick.State;
+import nucleus.presenter.RxPresenter;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class UserFragmentPresenter extends BasePresenter<UserFragment> {
+public class UserFragmentPresenter extends RxPresenter<UserFragment> {
 
     private static final int GET_USER_REQUEST = 1;
-    private long userId;
+
+    @State
+    long userId;
+
     private User user;
 
-   /* @Inject
-    BriteDatabase db;*/
     @Inject
     DatabaseHelper databaseHelper;
 
@@ -36,8 +40,8 @@ public class UserFragmentPresenter extends BasePresenter<UserFragment> {
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
-
-        restartableReplay(GET_USER_REQUEST,
+        Icepick.restoreInstanceState(this, savedState);
+        restartableLatestCache(GET_USER_REQUEST,
                 () -> userPostsService.getUser(userId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread()),
@@ -49,6 +53,7 @@ public class UserFragmentPresenter extends BasePresenter<UserFragment> {
                 (userFragment, throwable) -> {
                     ((MainActivity)(userFragment.getActivity())).onNetworkError();
                         waitForInternetToComeBack();
+                        userFragment.activateButtons(false);
                         userFragment.showLoading(false);
                 });
     }
@@ -84,8 +89,13 @@ public class UserFragmentPresenter extends BasePresenter<UserFragment> {
 
     public void saveUser() {
         new Thread(() -> {
-            databaseHelper.insertDataIntoDb(user);
+            databaseHelper.insertUserDataIntoDb(user);
         }).start();
     }
 
+    @Override
+    protected void onSave(Bundle state) {
+        super.onSave(state);
+        Icepick.saveInstanceState(this, state);
+    }
 }

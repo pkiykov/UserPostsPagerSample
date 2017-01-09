@@ -27,8 +27,6 @@ public class BaseFragment<P extends Presenter> extends NucleusFragment<P> {
         super.onCreate(bundle);
     }
 
-
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

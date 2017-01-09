@@ -85,4 +85,8 @@ public class PostsPagerAdapter extends PagerAdapter {
     public int getItemPosition(Object object) {
         return POSITION_NONE;
     }
+
+    public int getListSize() {
+        return postArrayList.size();
+    }
 }

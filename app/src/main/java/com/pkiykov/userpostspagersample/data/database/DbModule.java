@@ -2,10 +2,14 @@ package com.pkiykov.userpostspagersample.data.database;
 
 import android.app.Application;
 
+import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.SqlBrite;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import rx.schedulers.Schedulers;
 
 @Module
 public class DbModule {
@@ -16,7 +20,7 @@ public class DbModule {
         return new DatabaseHelper(application);
     }
 
-   /* @Provides
+    @Provides
     @Singleton
     SqlBrite provideSqlBrite() {
         return new SqlBrite.Builder().build();
@@ -26,6 +30,5 @@ public class DbModule {
     @Singleton
     BriteDatabase provideDatabase(SqlBrite sqlBrite, DatabaseHelper helper) {
         return sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
-    }*/
-
+    }
 }
